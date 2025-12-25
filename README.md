@@ -1,0 +1,1 @@
+# web_magang_simanov
