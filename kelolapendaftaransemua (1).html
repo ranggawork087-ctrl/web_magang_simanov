@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Pendaftar - SIMANOV</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'hitam': '#000000',
+                        'putih-muda': '#F8F9FA',
+                        'putih': '#FFFFFF',
+                        'abu-sedang': '#848D92',
+                        'abu-terang': '#D9D9D9',
+                        'biru-cerah': '#0166FF',
+                        'biru-muda': '#01A0E3',
+                        'biru-gelap': '#253C80',
+                        'hijau': '#28A745',
+                        'merah-soft': '#DC3545',
+                        'merah-tua': '#D31510',
+                        'kuning-terang': '#FFDF10'
+                    },
+                    fontFamily: {
+                        'manrope': ['Manrope', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background-color: white;
+            border-radius: 16px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideIn 0.3s ease-out;
+        }
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body class="bg-putih-muda font-manrope">
+    <div class="flex min-h-screen flex-col">
+        <!-- Header -->
+        <div class="bg-biru-gelap text-white px-8 py-3 flex justify-between items-center shadow-md">
+            <div class="flex items-start gap-3">
+                <div class="flex flex-col">
+                    <div class="flex items-center mb-1">
+                        <div class="w-6 h-8 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded mr-2 flex items-center justify-center">
+                            <div class="w-2 h-4 bg-biru-gelap rounded"></div>
+                        </div>
+                        <div>
+                            <h1 class="text-sm font-bold leading-tight">SIMANOV</h1>
+                            <p class="text-[10px] text-abu-terang opacity-80">Sistem Informasi Rumah Inovatif</p>
+                        </div>
+                    </div>
+                    <h2 class="text-lg font-bold">DASHBOARD ADMIN</h2>
+                </div>
+            </div>
+            <div class="flex items-center">
+                <span class="mr-2 text-base">Halo,</span>
+                <span class="text-biru-muda font-bold text-base">ADMIN</span>
+                <button class="ml-6">
+                    <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+       <div class="flex flex-1 overflow-hidden">
+
+    <!-- Sidebar -->
+    <div class="bg-biru-gelap text-white flex flex-col min-w-[220px]" style="width: 220px;">
+                <nav class="flex-1 pt-4">
+                    <a href="#" class="flex items-center px-6 py-3.5 hover:bg-white hover:bg-opacity-10 transition border-l-4 border-transparent">
+                        <svg class="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
+                        </svg>
+                        <span class="font-semibold text-base">Dashboard</span>
+                    </a>
+                    <a href="#" class="flex items-center px-6 py-3.5 bg-[#9DA5BB] border-l-4 border-white">
+                        <svg class="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                        </svg>
+                        <span class="font-semibold text-base">Kelola Pendaftar</span>
+                    </a>
+                    <a href="#" class="flex items-center px-6 py-3.5 hover:bg-white hover:bg-opacity-10 transition border-l-4 border-transparent">
+                        <svg class="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-2.06 11L15 15.28 12.06 17l.78-3.33-2.59-2.24 3.41-.29L15 8l1.34 3.14 3.41.29-2.59 2.24.78 3.33z"/>
+                        </svg>
+                        <span class="font-semibold text-base">Data Wawancara</span>
+                    </a>
+                    <div class="mx-6 my-6 border-t border-white opacity-20"></div>
+                    <a href="#" onclick="openKeluarModal(); return false;" class="flex items-center px-6 py-3.5 text-merah-soft hover:bg-white hover:bg-opacity-10 transition border-l-4 border-transparent">
+    <svg class="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
+    </svg>
+    <span class="font-semibold text-base">Keluar</span>
+</a>
+                </nav>
+                <div class="p-6 text-xs text-abu-terang border-t border-white border-opacity-20">
+                    <p class="mb-1">Session: Admin</p>
+                    <p>Terakhir login: 2025/10/11 09:17:42</p>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+        <div class="flex-1 flex justify-center overflow-x-hidden">
+    <div class="p-9 w-full max-w-6xl">
+
+
+                    <h2 class="text-3xl font-bold mb-2 text-biru-gelap">Kelola Pendaftar</h2>
+                    <p class="text-abu-sedang mb-6 text-base">Cari, filter, dan lakukan tindakan pada pendaftar</p>
+
+                    <!-- Search and Filter Section -->
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-4">
+                            <div class="relative">
+                                <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-abu-sedang" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                </svg>
+                               <input 
+                                    type="text" 
+                                    id="searchInput"
+                                    onkeyup="searchTable()"
+                                    placeholder="Cari nama, email, Instansi..." 
+                                    class="pl-12 pr-4 py-3 border border-abu-terang rounded-full w-80 focus:outline-none focus:ring-2 focus:ring-biru-muda focus:border-transparent"
+                                >                       
+                            </div>
+                            <div class="relative">
+                               <select id="statusFilter" onchange="filterTable()" class="appearance-none px-6 py-3 pr-10 border border-abu-terang rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-biru-muda focus:border-transparent cursor-pointer">
+                                    <option value="">Semua Status</option>
+                                    <option value="diterima">Diterima</option>
+                                    <option value="ditolak">Ditolak</option>
+                                    <option value="wawancara">Wawancara</option>
+                                    <option value="menunggu">Menunggu</option>
+                                </select>
+                                <svg class="absolute right-4 top-1/2 transform -translate-y-1/2 w-4 h-4 text-hitam pointer-events-none" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <button class="px-6 py-3 border-2 border-hitam text-hitam rounded-full font-semibold hover:bg-hitam hover:text-white transition">
+                            Simpan .csv
+                        </button>
+                    </div>
+
+                    <!-- Table Section -->
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                        <div class="bg-putih-muda px-6 py-4 border-b border-abu-terang">
+                            <p class="text-sm text-abu-sedang">Daftar pendaftar - gunakan pencarian/filter untuk menemukan data</p>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table id="pendaftarTable" class="w-full">
+                                <thead>
+                                    <tr class="bg-biru-muda text-white">
+                                        <th class="px-6 py-4 text-left font-bold text-sm">No</th>
+                                        <th class="px-6 py-4 text-left font-bold text-sm">Nama Lengkap</th>
+                                        <th class="px-6 py-4 text-left font-bold text-sm">Asal Instansi</th>
+                                        <th class="px-6 py-4 text-left font-bold text-sm">Kontak</th>
+                                        <th class="px-6 py-4 text-left font-bold text-sm">Tanggal Daftar</th>
+                                        <th class="px-6 py-4 text-left font-bold text-sm">Status</th>
+                                        <th class="px-6 py-4 text-left font-bold text-sm">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100">
+                                    <!-- Row 1 -->
+                                    <tr class="hover:bg-gray-50 transition">
+                                        <td class="px-6 py-4 text-sm">1</td>
+                                        <td class="px-6 py-4 text-sm font-semibold">Dwi Amanda Yona</td>
+                                        <td class="px-6 py-4 text-sm">UNESA</td>
+                                        <td class="px-6 py-4 text-xs">
+                                            <div>dwi.23054@mhs.unesa.ac.id</div>
+                                            <div class="text-abu-sedang">+628255667820</div>
+                                        </td>
+                                        <td class="px-6 py-4 text-sm">2025/10/11</td>
+                                        <td class="px-6 py-4">
+                                            <span class="px-4 py-1.5 bg-hijau text-white rounded-full text-xs font-semibold inline-block">Diterima</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex gap-2">
+                                                <button onclick="openModal(1)" class="px-4 py-1.5 border-2 border-biru-muda text-biru-muda rounded-lg text-xs font-semibold hover:bg-biru-muda hover:text-white transition">Lihat</button>
+                                               <button onclick="openTerimaModal()" class="px-4 py-1.5 bg-hijau text-white rounded-lg">Terima</button>
+                                               <button onclick="openTolakModal()" class="px-4 py-1.5 bg-merah-soft text-white rounded-lg">Tolak</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <!-- Row 2 -->
+                                    <tr class="hover:bg-gray-50 transition">
+                                        <td class="px-6 py-4 text-sm">2</td>
+                                        <td class="px-6 py-4 text-sm font-semibold">Marsanda Sofi A</td>
+                                        <td class="px-6 py-4 text-sm">UNESA</td>
+                                        <td class="px-6 py-4 text-xs">
+                                            <div>sofi.23066@mhs.unesa.ac.id</div>
+                                            <div class="text-abu-sedang">+6281907377446</div>
+                                        </td>
+                                        <td class="px-6 py-4 text-sm">2025/10/11</td>
+                                        <td class="px-6 py-4">
+                                            <span class="px-4 py-1.5 bg-hijau text-white rounded-full text-xs font-semibold inline-block">Diterima</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex gap-2">
+                                                <button onclick="openModal(2)" class="px-4 py-1.5 border-2 border-biru-muda text-biru-muda rounded-lg text-xs font-semibold hover:bg-biru-muda hover:text-white transition">Lihat</button>
+                                                <button onclick="openTerimaModal()" class="px-4 py-1.5 bg-hijau text-white rounded-lg">Terima</button>
+                                                <button onclick="openTolakModal()" class="px-4 py-1.5 bg-merah-soft text-white rounded-lg">Tolak</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <!-- Row 3 -->
+                                    <tr class="hover:bg-gray-50 transition">
+                                        <td class="px-6 py-4 text-sm">3</td>
+                                        <td class="px-6 py-4 text-sm font-semibold">Billy Firuzzeen P</td>
+                                        <td class="px-6 py-4 text-sm">SMK 6 SURABAYA</td>
+                                        <td class="px-6 py-4 text-xs">
+                                            <div>billyzen@gmail.com</div>
+                                            <div class="text-abu-sedang">+621234567890</div>
+                                        </td>
+                                        <td class="px-6 py-4 text-sm">2025/10/11</td>
+                                        <td class="px-6 py-4">
+                                            <span class="px-4 py-1.5 bg-merah-soft text-white rounded-full text-xs font-semibold inline-block">Ditolak</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex gap-2">
+                                                <button onclick="openModal(3)" class="px-4 py-1.5 border-2 border-biru-muda text-biru-muda rounded-lg text-xs font-semibold hover:bg-biru-muda hover:text-white transition">Lihat</button>
+                                                <button onclick="openTerimaModal()" class="px-4 py-1.5 bg-hijau text-white rounded-lg">Terima</button>
+                                            <button onclick="openTolakModal()" class="px-4 py-1.5 bg-merah-soft text-white rounded-lg">Tolak</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <!-- Row 4 -->
+                                    <tr class="hover:bg-gray-50 transition">
+                                        <td class="px-6 py-4 text-sm">4</td>
+                                        <td class="px-6 py-4 text-sm font-semibold">Arva Nurya Syaputra</td>
+                                        <td class="px-6 py-4 text-sm">SMK 6 SURABAYA</td>
+                                        <td class="px-6 py-4 text-xs">
+                                            <div>arvanurya@gmail.com</div>
+                                            <div class="text-abu-sedang">+621234567890</div>
+                                        </td>
+                                        <td class="px-6 py-4 text-sm">2025/10/11</td>
+                                        <td class="px-6 py-4">
+                                            <span class="px-4 py-1.5 bg-biru-muda text-white rounded-full text-xs font-semibold inline-block">Wawancara</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex gap-2">
+                                                <button onclick="openModal(4)" class="px-4 py-1.5 border-2 border-biru-muda text-biru-muda rounded-lg text-xs font-semibold hover:bg-biru-muda hover:text-white transition">Lihat</button>
+                                               <button onclick="openTerimaModal()" class="px-4 py-1.5 bg-hijau text-white rounded-lg">Terima</button>
+                                               <button onclick="openTolakModal()" class="px-4 py-1.5 bg-merah-soft text-white rounded-lg">Tolak</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <!-- Row 5 -->
+                                    <tr class="hover:bg-gray-50 transition">
+                                        <td class="px-6 py-4 text-sm">5</td>
+                                        <td class="px-6 py-4 text-sm font-semibold">Farah Adelia Marsa</td>
+                                        <td class="px-6 py-4 text-sm">UNESA</td>
+                                        <td class="px-6 py-4 text-xs">
+                                            <div>farah.23@mhs.unesa.ac.id</div>
+                                            <div class="text-abu-sedang">+621234567890</div>
+                                        </td>
+                                        <td class="px-6 py-4 text-sm">2025/10/11</td>
+                                        <td class="px-6 py-4">
+                                            <span class="px-4 py-1.5 bg-kuning-terang text-hitam rounded-full text-xs font-semibold inline-block">Menunggu</span>
+                                        </td>
+                                        <td class="px-6 py-4">
+                                            <div class="flex gap-2">
+                                                <button onclick="openModal(5)" class="px-4 py-1.5 border-2 border-biru-muda text-biru-muda rounded-lg text-xs font-semibold hover:bg-biru-muda hover:text-white transition">Lihat</button>
+                                                <button onclick="openTerimaModal()" class="px-4 py-1.5 bg-hijau text-white rounded-lg">Terima</button>
+                                                <button onclick="openTolakModal()" class="px-4 py-1.5 bg-merah-soft text-white rounded-lg">Tolak</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<!-- Modal Konfirmasi Terima -->
+<div id="konfirmasiTerimaModal" class="modal">
+    <div class="modal-content p-8 max-w-sm">
+        <div class="flex flex-col items-center text-center">
+            <!-- Icon centang hijau -->
+            <div class="w-16 h-16 bg-hijau rounded-full flex items-center justify-center mb-4">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                </svg>
+            </div>
+            <!-- Teks pertanyaan -->
+            <h3 class="text-lg font-bold mb-2 text-hitam">Apakah Anda yakin ingin menyetujui pendaftar ini?</h3>
+            <p class="text-sm text-abu-sedang mb-6">Pendaftar akan menerima notifikasi bahwa mereka telah diterima.</p>
+            <!-- Tombol Batal dan Ya, Lanjutkan -->
+            <div class="flex gap-3 w-full justify-center">
+                <button onclick="closeTerimaModal()" class="px-8 py-2 bg-abu-terang text-hitam rounded-lg font-semibold hover:bg-gray-400 transition">Batal</button>
+                <button onclick="konfirmasiTerima()" class="px-6 py-2 bg-hijau text-white rounded-lg font-semibold hover:bg-green-600 transition">Ya, Lanjutkan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Konfirmasi Tolak -->
+<div id="konfirmasiTolakModal" class="modal">
+    <div class="modal-content p-8 max-w-sm">
+        <div class="flex flex-col items-center text-center">
+            <!-- Icon X merah -->
+            <div class="w-16 h-16 bg-merah-soft rounded-full flex items-center justify-center mb-4">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </div>
+            <!-- Teks pertanyaan -->
+            <h3 class="text-lg font-bold mb-2 text-hitam">Apakah Anda yakin ingin menolak pendaftar ini?</h3>
+            <p class="text-sm text-abu-sedang mb-6">Pendaftar akan menerima notifikasi bahwa mereka telah ditolak.</p>
+            <!-- Tombol Batal dan Ya, Lanjutkan -->
+            <div class="flex gap-3 w-full justify-center">
+                <button onclick="closeTolakModal()" class="px-8 py-2 bg-abu-terang text-hitam rounded-lg font-semibold hover:bg-gray-400 transition">Batal</button>
+                <button onclick="konfirmasiTolak()" class="px-6 py-2 bg-merah-soft text-white rounded-lg font-semibold hover:bg-red-600 transition">Ya, Lanjutkan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Konfirmasi Keluar -->
+<div id="konfirmasiKeluarModal" class="modal">
+    <div class="modal-content p-8 max-w-sm">
+        <div class="flex flex-col items-center text-center">
+            <!-- Icon logout merah -->
+            <div class="w-16 h-16 bg-merah-soft rounded-full flex items-center justify-center mb-4">
+                <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
+                </svg>
+            </div>
+            <!-- Teks pertanyaan -->
+            <h3 class="text-lg font-bold mb-2 text-hitam">Keluar dari Dashboard?</h3>
+            <p class="text-sm text-abu-sedang mb-6">Apakah Anda yakin ingin keluar dari akun admin?</p>
+            <!-- Tombol Batal dan Keluar -->
+            <div class="flex gap-3 w-full justify-center">
+                <button onclick="closeKeluarModal()" class="px-8 py-2 bg-abu-terang text-hitam rounded-lg font-semibold hover:bg-gray-400 transition">Batal</button>
+                <button onclick="konfirmasiKeluar()" class="px-6 py-2 bg-merah-soft text-white rounded-lg font-semibold hover:bg-red-600 transition">Keluar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Modal Detail Pendaftar -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content p-8 relative">
+            <button onclick="closeModal()" class="absolute top-6 right-6 text-gray-400 hover:text-gray-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+            
+            <h2 class="text-2xl font-bold mb-6">Detail Pendaftar</h2>
+            
+            <div class="grid grid-cols-3 gap-6">
+                <!-- Kolom Kiri & Tengah -->
+                <div class="col-span-2">
+                    <h3 id="modalNama" class="text-xl font-bold mb-2">Nama Lengkap</h3>
+                    <p id="modalNIM" class="text-sm text-abu-sedang mb-4">NIM | Instansi</p>
+                    
+                    <div class="mb-6">
+                        <span class="text-sm font-semibold mr-2">Status:</span>
+                        <span id="modalStatus" class="px-4 py-1.5 bg-hijau text-white rounded-full text-xs font-semibold inline-block">Diterima</span>
+                    </div>
+
+                    <hr class="my-6 border-abu-terang">
+
+                    <div class="space-y-3">
+                        <div class="grid grid-cols-3">
+                            <span class="font-semibold">Email</span>
+                            <span id="modalEmail" class="col-span-2 text-abu-sedang">email@example.com</span>
+                        </div>
+                        <div class="grid grid-cols-3">
+                            <span class="font-semibold">No. HP</span>
+                            <span id="modalHP" class="col-span-2 text-abu-sedang">+6281234567890</span>
+                        </div>
+                        <div class="grid grid-cols-3">
+                            <span class="font-semibold">Asal Instansi</span>
+                            <span id="modalInstansi" class="col-span-2 text-abu-sedang">Universitas</span>
+                        </div>
+                        <div class="grid grid-cols-3">
+                            <span class="font-semibold">Program Studi</span>
+                            <span id="modalProdi" class="col-span-2 text-abu-sedang">Program Studi</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kolom Kanan - Foto -->
+                <div class="col-span-1">
+                    <img id="modalFoto" src="https://via.placeholder.com/200x250" alt="Foto Pendaftar" class="w-full rounded-lg shadow-md mb-4">
+                    <div class="text-center">
+                        <p class="font-semibold mb-1">Durasi:</p>
+                        <p id="modalDurasi" class="text-sm text-abu-sedang">2025-10-11 s/d 2025-12-31</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- File Section -->
+            <div class="mt-8">
+                <p class="font-semibold mb-3">File :</p>
+                <div class="flex gap-3">
+                    <button class="px-4 py-2 border-2 border-biru-muda text-biru-muda rounded-lg text-sm font-semibold hover:bg-biru-muda hover:text-white transition">CV.pdf</button>
+                    <button class="px-4 py-2 border-2 border-biru-muda text-biru-muda rounded-lg text-sm font-semibold hover:bg-biru-muda hover:text-white transition">surat permohonan.pdf</button>
+                    <button class="px-4 py-2 border-2 border-biru-muda text-biru-muda rounded-lg text-sm font-semibold hover:bg-biru-muda hover:text-white transition">Portofolio.pdf</button>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+<div class="flex justify-end gap-3 mt-8">
+    <button onclick="closeModal()" class="px-6 py-2.5 bg-abu-sedang text-white rounded-lg font-semibold hover:bg-gray-600 transition">Tutup</button>
+    <button onclick="openTerimaModal()" class="px-6 py-2.5 bg-hijau text-white rounded-lg font-semibold hover:bg-green-600 transition">Terima</button>
+    <button onclick="openTolakModal()" class="px-6 py-2.5 bg-merah-soft text-white rounded-lg font-semibold hover:bg-red-600 transition">Tolak</button>
+</div>
+    </div>
+
+    <script>
+        // Data pendaftar
+        const pendaftarData = {
+            1: {
+                nama: "Dwi Amanda Yona",
+                nim: "230541204054",
+                instansi: "UNESA",
+                email: "dwi.23054@mhs.unesa.ac.id",
+                hp: "+628823566782",
+                prodi: "Teknik Informatika",
+                status: "Diterima",
+                statusClass: "bg-hijau",
+                durasi: "2025-10-11 s/d 2025-12-31",
+                foto: "https://via.placeholder.com/200x250/FF0000/FFFFFF?text=Dwi"
+            },
+            2: {
+                nama: "Marsanda Sofi A",
+                nim: "230541204066",
+                instansi: "UNESA",
+                email: "sofi.23066@mhs.unesa.ac.id",
+                hp: "+6281907377446",
+                prodi: "Teknik Informatika",
+                status: "Diterima",
+                statusClass: "bg-hijau",
+                durasi: "2025-10-11 s/d 2025-12-31",
+                foto: "https://via.placeholder.com/200x250/FF0000/FFFFFF?text=Sofi"
+            },
+            3: {
+                nama: "Billy Firuzzeen P",
+                nim: "1234567891011",
+                instansi: "SMK 6 Surabaya",
+                email: "billyzen@gmail.com",
+                hp: "+621234567890",
+                prodi: "DKV",
+                status: "Ditolak",
+                statusClass: "bg-merah-soft",
+                durasi: "2025-10-11 s/d 2026-02-01",
+                foto: "https://via.placeholder.com/200x250/808080/FFFFFF?text=Billy"
+            },
+            4: {
+                nama: "Arva Nurya Syaputra",
+                nim: "1234567891011",
+                instansi: "SMK 6 Surabaya",
+                email: "arvanurya@gmail.com",
+                hp: "+621234567890",
+                prodi: "DKV",
+                status: "Wawancara",
+                statusClass: "bg-biru-muda",
+                durasi: "2025-10-11 s/d 2026-02-01",
+                foto: "https://via.placeholder.com/200x250/D2B48C/FFFFFF?text=Arva"
+            },
+            5: {
+                nama: "Farah Adelia Marsa",
+                nim: "2301234567890",
+                instansi: "UNESA",
+                email: "farah.23@mhs.unesa.ac.id",
+                hp: "+621234567890",
+                prodi: "Teknologi Pendidikan",
+                status: "Menunggu",
+                statusClass: "bg-kuning-terang text-hitam",
+                durasi: "2025-10-11 s/d 2025-12-20",
+                foto: "https://via.placeholder.com/200x250/404040/FFFFFF?text=Farah"
+            }
+        };
+
+        function openModal(id) {
+            const data = pendaftarData[id];
+            if (!data) return;
+
+            document.getElementById('modalNama').textContent = data.nama;
+            document.getElementById('modalNIM').textContent = `${data.nim} | ${data.instansi}`;
+            document.getElementById('modalEmail').textContent = data.email;
+            document.getElementById('modalHP').textContent = data.hp;
+            document.getElementById('modalInstansi').textContent = data.instansi;
+            document.getElementById('modalProdi').textContent = data.prodi;
+            document.getElementById('modalDurasi').textContent = data.durasi;
+            document.getElementById('modalFoto').src = data.foto;
+            
+            const statusBadge = document.getElementById('modalStatus');
+            statusBadge.textContent = data.status;
+            statusBadge.className = `px-4 py-1.5 ${data.statusClass} text-white rounded-full text-xs font-semibold inline-block`;
+
+            document.getElementById('detailModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('detailModal').classList.remove('active');
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('detailModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // ==========================================
+        // 👇 FUNGSI BARU DITAMBAHKAN DI SINI 👇
+        // ==========================================
+
+        // Functions for Konfirmasi Terima Modal
+        function openTerimaModal() {
+            document.getElementById('konfirmasiTerimaModal').classList.add('active');
+        }
+
+        function closeTerimaModal() {
+            document.getElementById('konfirmasiTerimaModal').classList.remove('active');
+        }
+
+        function konfirmasiTerima() {
+            // Di sini Anda bisa menambahkan logika untuk menyimpan data ke database
+            alert('Pendaftar berhasil diterima!');
+            closeTerimaModal();
+            // Optional: close detail modal if open
+            if (document.getElementById('detailModal').classList.contains('active')) {
+                closeModal();
+            }
+        }
+
+        // Functions for Konfirmasi Tolak Modal
+        function openTolakModal() {
+            document.getElementById('konfirmasiTolakModal').classList.add('active');
+        }
+
+        function closeTolakModal() {
+            document.getElementById('konfirmasiTolakModal').classList.remove('active');
+        }
+
+        function konfirmasiTolak() {
+            // Di sini Anda bisa menambahkan logika untuk menyimpan data ke database
+            alert('Pendaftar berhasil ditolak!');
+            closeTolakModal();
+            // Optional: close detail modal if open
+            if (document.getElementById('detailModal').classList.contains('active')) {
+                closeModal();
+            }
+        }
+
+        // Close modals when clicking outside
+        document.getElementById('konfirmasiTerimaModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeTerimaModal();
+            }
+        });
+
+        document.getElementById('konfirmasiTolakModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeTolakModal();
+            }
+        });
+
+        // ==========================================
+        // 👆 SAMPAI SINI - FUNGSI BARU 👆
+        // ==========================================
+
+// Functions for Konfirmasi Keluar Modal
+        function openKeluarModal() {
+            document.getElementById('konfirmasiKeluarModal').classList.add('active');
+        }
+
+        function closeKeluarModal() {
+            document.getElementById('konfirmasiKeluarModal').classList.remove('active');
+        }
+
+        function konfirmasiKeluar() {
+            // Di sini Anda bisa menambahkan logika logout (redirect ke halaman login)
+            alert('Anda telah keluar dari sistem!');
+            // Uncomment baris di bawah untuk redirect ke halaman login
+            // window.location.href = 'login.html';
+            closeKeluarModal();
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('konfirmasiKeluarModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeKeluarModal();
+            }
+        });
+
+        // ==========================================
+        // AKHIR FUNGSI POP-UP KELUAR
+        // ==========================================
+        
+// Search functionality
+function searchTable() {
+    let input = document.getElementById("searchInput").value.toLowerCase();
+    let table = document.getElementById("pendaftarTable");
+    let rows = table.getElementsByTagName("tr");
+
+    for (let i = 1; i < rows.length; i++) { 
+        let cells = rows[i].getElementsByTagName("td");
+        let match = false;
+
+        for (let j = 0; j < cells.length; j++) {
+            let text = cells[j].textContent.toLowerCase();
+            if (text.includes(input)) {
+                match = true;
+                break;
+            }
+        }
+
+        rows[i].style.display = match ? "" : "none";
+    }
+}
+
+// Filter functionality
+function filterTable() {
+    let filter = document.getElementById("statusFilter").value.toLowerCase();
+    let table = document.getElementById("pendaftarTable");
+    let rows = table.getElementsByTagName("tr");
+
+    for (let i = 1; i < rows.length; i++) {
+        let statusCell = rows[i].getElementsByTagName("td")[5]; // Kolom status ada di index 5
+        if (!statusCell) continue;
+
+        let statusText = statusCell.textContent.toLowerCase().trim();
+
+        if (filter === "" || statusText.includes(filter)) {
+            rows[i].style.display = "";
+        } else {
+            rows[i].style.display = "none";
+        }
+    }
+}
+</script>
+
+<script>
+document.getElementById("statusFilter").addEventListener("change", function () {
+    let filter = this.value.toLowerCase();
+    let rows = document.querySelectorAll("#tablePendaftar tbody tr");
+
+    rows.forEach(row => {
+        let statusCell = row.querySelector(".status");
+        if (!statusCell) return;
+
+        let status = statusCell.innerText.toLowerCase();
+
+        if (filter === "" || filter === "semua status") {
+            row.style.display = "";
+        } else if (status === filter) {
+            row.style.display = "";
+        } else {
+            row.style.display = "none";
+        }
+    });
+});
+</script>
+
+
+</body>
+</html>
